@@ -12,7 +12,7 @@ test("starts with ten users, name-only sorting, and the full directory overview"
   page,
 }) => {
   await expect(
-    page.getByRole("heading", { name: "User directory." }),
+    page.getByRole("heading", { name: "User directory" }),
   ).toBeVisible();
   await expect(page.getByRole("columnheader")).toHaveText([
     "Name",

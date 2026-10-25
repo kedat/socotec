@@ -63,9 +63,7 @@ export default function App() {
         <div className="page-heading">
           <div>
             <p className="eyebrow">YOUR WORKSPACE, CONNECTED</p>
-            <h1>
-              User directory<span className="heading-dot">.</span>
-            </h1>
+            <h1>User directory</h1>
             <p className="page-description">
               A little clarity on the people who make it happen.
             </p>
