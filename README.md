@@ -1,0 +1,72 @@
+# People — User directory
+
+A frontend-only React + TypeScript app using [Vite](https://vite.dev/guide/) and pnpm. Includes 24 fictional users, preserving your original four records and the `{ id, name, role, active }` structure.
+
+## Run locally
+
+Use Node.js 24 and pnpm 12 (the exact pnpm version is pinned in `package.json`).
+
+```sh
+pnpm install
+pnpm dev
+```
+
+Open the Local URL printed by Vite, usually <http://localhost:5173>.
+
+Node.js and pnpm were not available on this machine, so ignored project-local tools are also provided. You can run the app immediately here with:
+
+```sh
+./scripts/pnpm-local.sh dev
+```
+
+The helper forwards any pnpm command, for example `./scripts/pnpm-local.sh build`. These tools are only in `.tools/` and do not change your system installation. On another machine, install Node.js and pnpm normally and use the standard commands above.
+
+## Features
+
+- Search by name, ignoring case and surrounding whitespace.
+- Combine role and active/inactive filters.
+- Sort by name, ascending or descending (A–Z by default).
+- Paginate with 8, 12, or 24 users per page.
+- Clear filters and recover from empty search results.
+- View total, active, inactive, and role counts for the full dataset.
+- Use responsive layouts, labeled controls, keyboard focus indicators, and live result announcements.
+
+## Commands
+
+| Command | Purpose |
+| --- | --- |
+| `pnpm dev` | Start the development server |
+| `pnpm typecheck` | Check application and configuration types |
+| `pnpm test` | Run filtering and UI interaction tests |
+| `pnpm test:watch` | Run tests while editing |
+| `pnpm build` | Type-check and produce the static `dist/` build |
+| `pnpm preview` | Serve the production build locally |
+
+## Project structure
+
+```text
+src/
+  components/       # Overview cards, user table, and shared icons
+  data/users.ts     # The sample users; add more records here
+  types/user.ts     # User shape and filter types
+  utils/            # Pure search/filter/sort logic and tests
+  App.tsx           # Filter state, pagination, and page layout
+  App.test.tsx      # User interaction tests
+  styles.css        # Responsive styling
+```
+
+## Add more data
+
+Add objects to `src/data/users.ts` using unique numeric IDs:
+
+```ts
+{ id: 25, name: 'Alex Rivera', role: 'Developer', active: true },
+```
+
+Role options, summary counts, and pagination update automatically. New role names are supported without changing the filter UI.
+
+## Add a backend later
+
+The user type, data, filtering logic, and presentation are separate. Replace the imported sample data in `App.tsx` with data loaded from an API and add loading/error states when needed. You can keep the same components and `User` interface. For larger datasets, move search, filters, sorting, and pagination to the backend together.
+
+There is currently no backend, database, authentication, or saved user changes. Filters are held in React state and reset on refresh. Fonts use Google Fonts with local system fallbacks; no user data is sent to an API.
