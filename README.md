@@ -33,14 +33,25 @@ The helper forwards any pnpm command, for example `./scripts/pnpm-local.sh build
 
 ## Commands
 
-| Command | Purpose |
-| --- | --- |
-| `pnpm dev` | Start the development server |
-| `pnpm typecheck` | Check application and configuration types |
-| `pnpm test` | Run filtering and UI interaction tests |
-| `pnpm test:watch` | Run tests while editing |
-| `pnpm build` | Type-check and produce the static `dist/` build |
-| `pnpm preview` | Serve the production build locally |
+| Command             | Purpose                                                 |
+| ------------------- | ------------------------------------------------------- |
+| `pnpm dev`          | Start the development server                            |
+| `pnpm typecheck`    | Check application and configuration types               |
+| `pnpm test`         | Run filtering and UI interaction tests                  |
+| `pnpm test:watch`   | Run tests while editing                                 |
+| `pnpm build`        | Type-check and produce the static `dist/` build         |
+| `pnpm preview`      | Serve the production build locally                      |
+| `pnpm format`       | Format source, styles, configuration, and documentation |
+| `pnpm format:check` | Check formatting without changing files                 |
+| `pnpm prepare`      | Install or restore Husky's Git hooks                    |
+
+## Code formatting and commits
+
+[Prettier](https://prettier.io/docs/install.html) keeps the code consistent with two-space indentation, double quotes, semicolons, and trailing commas. Run `pnpm format` to format the project or `pnpm format:check` to check it. Generated files, dependencies, local tools, and the pnpm lockfile are excluded.
+
+[Husky](https://typicode.github.io/husky/get-started.html) installs Git hooks through the `prepare` script when you install dependencies. Before each commit, the pre-commit hook runs lint-staged to format staged files with Prettier. Formatting changes are included in the commit; partially staged changes are handled by lint-staged.
+
+The hook uses the project-local pnpm helper if pnpm is not on your PATH. You can also run any formatting command here using that helper, for example `./scripts/pnpm-local.sh format`.
 
 ## Project structure
 
