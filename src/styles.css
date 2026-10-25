@@ -39,8 +39,7 @@ select {
   -webkit-tap-highlight-color: transparent;
 }
 :focus-visible {
-  outline: 3px solid #6f9e85;
-  outline-offset: 4px;
+  outline: none;
 }
 a {
   color: inherit;
