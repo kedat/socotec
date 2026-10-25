@@ -113,3 +113,15 @@ Role options, summary counts, and pagination update automatically. New role name
 The user type, data, filtering logic, and presentation are separate. Replace the imported sample data in `App.tsx` with data loaded from an API and add loading/error states when needed. You can keep the same components and `User` interface. For larger datasets, move search, filters, sorting, and pagination to the backend together.
 
 There is currently no backend, database, authentication, or saved user changes. Filters are held in React state and reset on refresh. Fonts use Google Fonts with local system fallbacks; no user data is sent to an API.
+
+## Assumptions
+
+- The app uses 24 fictional users and runs entirely on the frontend.
+- Search is case-insensitive and ignores leading and trailing whitespace.
+
+## Known limitations and future improvements
+
+- There is currently no backend, database, or authentication. Filters reset when the page is refreshed.
+- Future improvements could include connecting to an API and adding loading and error states.
+- For larger datasets, move search, filtering, sorting, and pagination to the backend to avoid loading all users into the browser. Add debounced search and cancel outdated requests to reduce unnecessary API calls.
+- As the number of roles grows, fetch the available roles from the backend independently of the currently loaded users. Consider a searchable role selector and multi-select filtering when needed.
