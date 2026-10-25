@@ -26,7 +26,7 @@ The helper forwards any pnpm command, for example `./scripts/pnpm-local.sh build
 - Search by name, ignoring case and surrounding whitespace.
 - Combine role and active/inactive filters.
 - Sort by name, ascending or descending (A–Z by default).
-- Paginate with 8, 12, or 24 users per page.
+- Paginate with 10, 20, or 30 users per page (10 by default).
 - Clear filters and recover from empty search results.
 - View total, active, inactive, and role counts for the full dataset.
 - Use responsive layouts, labeled controls, keyboard focus indicators, and live result announcements.
