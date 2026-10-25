@@ -70,4 +70,43 @@ describe("user filtering", () => {
     ).toBe("Aisha Khan");
     expect(users.map((user) => user.id)).toEqual(original);
   });
+
+  it("handles an empty dataset", () => {
+    expect(filterUsers([], defaultFilters)).toEqual([]);
+  });
+
+  it("treats whitespace-only search as an empty query", () => {
+    expect(filterUsers(users, { ...defaultFilters, search: " \t " })).toEqual(
+      filterUsers(users, defaultFilters),
+    );
+  });
+
+  it("supports a new role without changing the filter logic", () => {
+    const newUser = {
+      id: 25,
+      name: "Alex Rivera",
+      role: "QA Engineer",
+      active: true,
+    };
+    expect(
+      filterUsers([...users, newUser], {
+        ...defaultFilters,
+        role: "QA Engineer",
+      }),
+    ).toEqual([newUser]);
+  });
+
+  it("keeps equal names in their original order without sorting by ID", () => {
+    const duplicates = [
+      { id: 20, name: "Alex Rivera", role: "Designer", active: true },
+      { id: 2, name: "Alex Rivera", role: "Developer", active: false },
+    ];
+    for (const sort of ["name-asc", "name-desc"] as const) {
+      expect(
+        filterUsers(duplicates, { ...defaultFilters, sort }).map(
+          (user) => user.id,
+        ),
+      ).toEqual([20, 2]);
+    }
+  });
 });

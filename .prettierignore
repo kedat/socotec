@@ -4,4 +4,7 @@ dist/
 .pnpm-store/
 .husky/_/
 coverage/
+playwright-report/
+test-results/
+blob-report/
 pnpm-lock.yaml

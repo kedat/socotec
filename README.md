@@ -33,17 +33,20 @@ The helper forwards any pnpm command, for example `./scripts/pnpm-local.sh build
 
 ## Commands
 
-| Command             | Purpose                                                 |
-| ------------------- | ------------------------------------------------------- |
-| `pnpm dev`          | Start the development server                            |
-| `pnpm typecheck`    | Check application and configuration types               |
-| `pnpm test`         | Run filtering and UI interaction tests                  |
-| `pnpm test:watch`   | Run tests while editing                                 |
-| `pnpm build`        | Type-check and produce the static `dist/` build         |
-| `pnpm preview`      | Serve the production build locally                      |
-| `pnpm format`       | Format source, styles, configuration, and documentation |
-| `pnpm format:check` | Check formatting without changing files                 |
-| `pnpm prepare`      | Install or restore Husky's Git hooks                    |
+| Command                | Purpose                                                               |
+| ---------------------- | --------------------------------------------------------------------- |
+| `pnpm dev`             | Start the development server                                          |
+| `pnpm typecheck`       | Check application and configuration types                             |
+| `pnpm test`            | Run filtering and UI interaction tests                                |
+| `pnpm test:watch`      | Run tests while editing                                               |
+| `pnpm test:e2e`        | Run desktop and mobile browser tests against a fresh production build |
+| `pnpm test:e2e:ui`     | Open Playwright's interactive test runner                             |
+| `pnpm test:e2e:report` | Open the latest browser test report                                   |
+| `pnpm build`           | Type-check and produce the static `dist/` build                       |
+| `pnpm preview`         | Serve the production build locally                                    |
+| `pnpm format`          | Format source, styles, configuration, and documentation               |
+| `pnpm format:check`    | Check formatting without changing files                               |
+| `pnpm prepare`         | Install or restore Husky's Git hooks                                  |
 
 ## Code formatting and commits
 
@@ -52,6 +55,32 @@ The helper forwards any pnpm command, for example `./scripts/pnpm-local.sh build
 [Husky](https://typicode.github.io/husky/get-started.html) installs Git hooks through the `prepare` script when you install dependencies. Before each commit, the pre-commit hook runs lint-staged to format staged files with Prettier. Formatting changes are included in the commit; partially staged changes are handled by lint-staged.
 
 The hook uses the project-local pnpm helper if pnpm is not on your PATH. You can also run any formatting command here using that helper, for example `./scripts/pnpm-local.sh format`.
+
+## Tests
+
+The test suites cover filtering and sorting logic, React interactions, and complete browser workflows. Playwright runs every browser scenario in desktop Chromium and an emulated Pixel 7 viewport; mobile emulation uses Chromium, not a physical device or a Safari browser.
+
+Install Playwright's Chromium browser once, then run the checks:
+
+```sh
+pnpm exec playwright install chromium
+pnpm format:check
+pnpm test
+pnpm test:e2e
+```
+
+The browser tests automatically build the application, start a production preview at <http://127.0.0.1:4173>, and stop it afterward. Keep port 4173 available. TypeScript also checks the browser tests and Playwright configuration during the build. Vitest only runs the tests under `src/`.
+
+On this machine, use the project-local helper and installed Google Chrome:
+
+```sh
+./scripts/pnpm-local.sh test
+PLAYWRIGHT_CHANNEL=chrome ./scripts/pnpm-local.sh test:e2e
+```
+
+The optional `PLAYWRIGHT_CHANNEL=chrome` selects installed Chrome instead of downloaded Chromium. The tests block Google Fonts requests so font-service availability cannot affect the results.
+
+Browser scenarios cover the 10/20/30 page sizes, first/last-page navigation, returning to page one after filters or sorting change, name-only search, combined filters, resetting, empty results, overview totals, status colors, bold active names, and layouts without horizontal page overflow. Failed tests retain screenshots and traces in `test-results/`; the HTML report is in `playwright-report/`. Both are ignored by Git. Run `pnpm test:e2e:report` to inspect the last report.
 
 ## Project structure
 
@@ -64,6 +93,9 @@ src/
   App.tsx           # Filter state, pagination, and page layout
   App.test.tsx      # User interaction tests
   styles.css        # Responsive styling
+e2e/
+  directory.spec.ts # Browser workflows on desktop and mobile
+playwright.config.ts # Browser projects and production preview setup
 ```
 
 ## Add more data
