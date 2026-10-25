@@ -10,9 +10,15 @@ describe("directory interactions", () => {
     const user = userEvent.setup();
     render(<App />);
     expect(screen.getByText("Aisha Khan")).toBeDefined();
-    expect(screen.queryByText("Isabella Rossi")).toBeNull();
+    expect(
+      (screen.getByLabelText("Rows per page") as HTMLSelectElement).value,
+    ).toBe("10");
+    expect(within(screen.getByRole("table")).getAllByRole("row")).toHaveLength(
+      11,
+    );
+    expect(screen.queryByText("Keiko Tanaka")).toBeNull();
     await user.click(screen.getByRole("button", { name: "Next page" }));
-    expect(screen.getByText("Isabella Rossi")).toBeDefined();
+    expect(screen.getByText("Keiko Tanaka")).toBeDefined();
     await user.selectOptions(
       screen.getByLabelText("Filter by status"),
       "inactive",
@@ -69,7 +75,15 @@ describe("directory interactions", () => {
         .getAllByRole("option")
         .map((option) => option.textContent),
     ).toEqual(["Name: A–Z", "Name: Z–A"]);
-    await user.selectOptions(screen.getByLabelText("Rows per page"), "24");
+    await user.selectOptions(screen.getByLabelText("Rows per page"), "20");
+    expect(within(screen.getByRole("table")).getAllByRole("row")).toHaveLength(
+      21,
+    );
+    expect(
+      (screen.getByRole("button", { name: "Next page" }) as HTMLButtonElement)
+        .disabled,
+    ).toBe(false);
+    await user.selectOptions(screen.getByLabelText("Rows per page"), "30");
     expect(within(screen.getByRole("table")).getAllByRole("row")).toHaveLength(
       25,
     );

@@ -11,7 +11,7 @@ const roles = [...new Set(users.map((user) => user.role))].sort();
 export default function App() {
   const [filters, setFilters] = useState<UserFilters>(defaultFilters);
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(8);
+  const [pageSize, setPageSize] = useState(10);
   const filteredUsers = filterUsers(users, filters);
   const pageCount = Math.max(1, Math.ceil(filteredUsers.length / pageSize));
   const visibleUsers = filteredUsers.slice(
@@ -209,9 +209,9 @@ export default function App() {
                     setPage(1);
                   }}
                 >
-                  <option value={8}>8</option>
-                  <option value={12}>12</option>
-                  <option value={24}>24</option>
+                  <option value={10}>10</option>
+                  <option value={20}>20</option>
+                  <option value={30}>30</option>
                 </select>
               </label>
               <nav className="pagination" aria-label="Pagination">
